@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор синтаксиса</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <style>
+        /* Добавляем стили для отображения ошибок */
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .highlighted {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Анализатор автоматного языка</h1>
+    <div class="input-section">
+        <label for="input-string">Ввод строки:</label>
+        <textarea id="input-string" placeholder="Введите строку, например: VAR A,B:REAL;"></textarea>
+        <button id="analyze-btn">Анализировать</button>
+    </div>
+    <div class="output-section">
+        <h2>Анализ строки:</h2>
+        <p id="analysis-result"></p>
+        <h2>Таблица имен переменных:</h2>
+        <table id="symbol-table">
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Тип</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Таблица будет заполняться программно -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="module" src="analyzer/analyzer.js"></script>
+<script type="module">
+    import { AnalyzerCode } from './analyzer/analyzer.js';
+
+    document.getElementById("analyze-btn").addEventListener("click", function() {
+        const inputString = document.getElementById("input-string").value;
+        console.log('Введенная строка:', inputString);
+        const result = AnalyzerCode.analyzedString(inputString);
+        console.log('Результат анализа:', result);
+
+        const analysisResultElement = document.getElementById("analysis-result");
+        const symbolTableBody = document.querySelector("#symbol-table tbody");
+
+        analysisResultElement.innerHTML = "";
+
+        const rows = symbolTableBody.querySelectorAll("tr");
+        rows.forEach(row => row.remove());
+
+        if (result.success === false) {
+            analysisResultElement.innerHTML = `<span class="error">${result.message}</span>`;
+            analysisResultElement.innerHTML += `<br>Ошибка в символе: ${result.highlightedText}`;
+        } else {
+            analysisResultElement.innerHTML = `<span>Цепочка принадлежит языку!</span>`;
+
+            symbolTableBody.innerHTML = "";
+
+            result.table.forEach(([identifier, type]) => {
+                const row = document.createElement("tr");
+                const cell1 = document.createElement("td");
+                const cell2 = document.createElement("td");
+
+                cell1.textContent = identifier;
+                cell2.textContent = type;
+
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+
+                symbolTableBody.appendChild(row);
+            });
+        }
+    });
+</script>
+
+
+</body>
+</html>
