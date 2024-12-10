@@ -28,45 +28,45 @@ VAR <list_of_descriptions> ;
 <constant1>, <constant2> ::= Integer constants in the range [-32768, 32767]
 <identifier> ::= Starts with a letter, followed by letters or digits; no spaces or special characters.
 
-Key Semantic Rules
-Identifier length must not exceed 8 characters.
-Identifiers cannot be reserved keywords (VAR, BYTE, WORD, etc.).
-Constants must be within the range [-32768, 32767].
-The first constant in a range must be less than the second constant.
-Duplicate variable declarations are not allowed.
+## Key Semantic Rules
+- Identifier length must not exceed 8 characters.
+- Identifiers cannot be reserved keywords (VAR, BYTE, WORD, etc.).
+- Constants must be within the range [-32768, 32767].
+- The first constant in a range must be less than the second constant.
+- Duplicate variable declarations are not allowed.
 
-Examples of Valid Declarations
-VAR Aa,B:REAL;
-VAR Abc:INTEGER;
-VAR A,K:BYTE, C:WORD, D17,E7:CHAR;
-VAR X,Y:ARRAY[1:10,20:30] OF INTEGER;
+## Examples of Valid Declarations
+- `VAR Aa,B:REAL;`
+- `VAR Abc:INTEGER;`
+- `VAR A,K:BYTE, C:WORD, D17,E7:CHAR;`
+- `VAR X,Y:ARRAY[1:10,20:30] OF INTEGER;`
 
-Project Structure
-Code Implementation: Written in JavaScript.
-Error Reporting: Errors are identified and displayed in Russian, pointing to the specific position in the input string.
-Main Logic: The main logic is implemented in AnalyzerCode.
+## Project Structure
+- **Code Implementation:** Written in JavaScript.
+- **Error Reporting:** Errors are identified and displayed in Russian, pointing to the specific position in the input string.
+- **Main Logic:** The main logic is implemented in `AnalyzerCode`.
 
-What I Learned
+## What I Learned
 Through this project, I gained practical experience in:
-Designing lexical, syntax, and semantic analyzers for context-free grammars.
-Applying finite state machines to analyze language syntax.
-Implementing error-handling mechanisms in parsers.
-Understanding Turbo Pascal language rules and constraints.
-Using JavaScript to solve complex parsing and validation tasks.
+- Designing lexical, syntax, and semantic analyzers for context-free grammars.
+- Applying finite state machines to analyze language syntax.
+- Implementing error-handling mechanisms in parsers.
+- Understanding Turbo Pascal language rules and constraints.
+- Using JavaScript to solve complex parsing and validation tasks.
 
-How to Run
+## How to Run
 Clone the repository:
 git clone https://github.com/Ariel-cano/js-analyzer.git
 Open the project folder and run the analyzer script in a JavaScript runtime environment.
 
-Limitations
-Error messages are in Russian, which may not be suitable for all users.
-Not optimized for large-scale code parsing.
+## Limitations
+- Error messages are in Russian, which may not be suitable for all users.
+- Not optimized for large-scale code parsing.
 
-Future Improvements
-Add support for multilingual error messages.
-Enhance the user interface for better usability.
-Expand the syntax coverage for other parts of the Turbo Pascal language.
+## Future Improvements
+- Add support for multilingual error messages.
+- Enhance the user interface for better usability.
+- Expand the syntax coverage for other parts of the Turbo Pascal language.
 
-Developed as part of a university project.
+## Developed as part of a university project.
 
