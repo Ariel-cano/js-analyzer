@@ -22,7 +22,7 @@ VAR <list_of_descriptions> ;
 <list_of_descriptions> ::= <description> | <list_of_descriptions>,<description>
 <description> ::= <list_of_variables>:<type>
 <list_of_variables> ::= <identifier> | <identifier>,<list_of_variables>
-<type> ::= ARRAY [<range>[,<range>]] OF <simple_type>
+<type> ::= ARRAY [<range>[,<range>]] OF <simple_type>|<simple_type>
 <simple_type> ::= BYTE | WORD | INTEGER | REAL | CHAR | DOUBLE
 <range> ::= <constant1>:<constant2>
 <constant1>, <constant2> ::= Integer constants in the range [-32768, 32767]
