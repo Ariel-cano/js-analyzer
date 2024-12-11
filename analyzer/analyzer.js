@@ -6,7 +6,7 @@ const States = {
     N12: 'N12', O13: 'O13', P14: 'P14', Q15: 'Q15', R16: 'R16',
     T17: 'T17', U18: 'U18', V19: 'V19', W20: 'W20', X21: 'X21',
     Y22: 'Y22', Z23: 'Z23', A24: 'A24', B25: 'B25', C26: 'C26',
-    D27: 'D27', OF1: 'OF1', OF2:'OF2',G28: 'G28', H29: 'H29',
+    D27: 'D27', OF1: 'OF1',G28: 'G28', H29: 'H29',
     I30: 'I30', F: 'F', E: 'E'
 };
 
@@ -1413,14 +1413,10 @@ export const AnalyzerCode = (() => {
                                 state = States.D27;
                                 break;
                             }
-                            case 'o':{
-                                state = States.OF1;
-                                break;
-                            }
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается 'o' или ' '`;
+                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается ' '`;
                                 break;
                             }
                         }
@@ -1435,7 +1431,7 @@ export const AnalyzerCode = (() => {
                                 break;
                             }
                             case 'o':{
-                                state = States.OF2;
+                                state = States.OF1;
                                 break;
                             }
                             default: {
@@ -1465,303 +1461,17 @@ export const AnalyzerCode = (() => {
                         pos++;
                         break;
                     }
-                    case States.OF2:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
-                        switch (symbol) {
-                            case 'f':{
-                                state = States.G28;
-                                break;
-                            }
-                            default: {
-                                state = States.E;
-                                index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается 'f'`;
-                                break;
-                            }
-                        }
-                        pos++;
-                        break;
-                    }
                     case States.G28: {
                         console.log('Вошли в состояние G28');
                         console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         if (symbol === ' ') {
-                            state = States.H29;  // Переход в состояние H6, если встречен пробел
+                            state = States.H29;
                             pos++;
                             symbol = str[pos];
-                        } else {
-                            switch (symbol) {
-                                case 'b': {
-                                    pos++
-                                    symbol = str[pos];
-                                    console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
-                                    if (symbol === 'y') {
-                                        pos++
-                                        symbol = str[pos];
-                                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
-                                        if (symbol === 't') {
-                                            pos++
-                                            symbol = str[pos];
-                                            console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
-                                            if (symbol === 'e') {
-                                                for (const id of semantics.keys()) {
-                                                    if (semantics.get(id) === null) {
-                                                        semantics.set(id, `array[${arraySem}] of byte`); // Сохраняем 'byte' в map
-                                                    }
-                                                }
-                                                state = States.I30;
-                                                pos++
-                                                symbol = str[pos];
-                                                console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
-                                                break;
-                                            } else {
-                                                state = States.E;
-                                                index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'byte', найден '${symbol}'`;
-                                            }
-                                        } else {
-                                            state = States.E;
-                                            index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'byte', найден '${symbol}'`;
-                                        }
-                                    } else {
-                                        state = States.E;
-                                        index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'y' для завершения слова 'byte', найден '${symbol}'`;
-                                    }
-                                    break;
-                                }
-                                case 'w': { // Для слова 'word'
-                                    pos++;
-                                    symbol = str[pos];
-                                    if (symbol === 'o') {
-                                        pos++;
-                                        symbol = str[pos];
-                                        if (symbol === 'r') {
-                                            pos++;
-                                            symbol = str[pos];
-                                            if (symbol === 'd') {
-                                                // Сохраняем 'word' в map
-                                                for (const id of semantics.keys()) {
-                                                    if (semantics.get(id) === null) {
-                                                        semantics.set(id, `array[${arraySem}] of word`);
-                                                    }
-                                                }
-                                                state = States.I30;
-                                                pos++;
-                                                symbol = str[pos];
-                                                break;
-                                            } else {
-                                                state = States.E;
-                                                index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'd' для завершения слова 'word', найден '${symbol}'`;
-                                            }
-                                        } else {
-                                            state = States.E;
-                                            index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'word', найден '${symbol}'`;
-                                        }
-                                    } else {
-                                        state = States.E;
-                                        index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'word', найден '${symbol}'`;
-                                    }
-                                    break;
-                                }
-                                case 'i': { // Для слова 'integer'
-                                    pos++;
-                                    symbol = str[pos];
-                                    if (symbol === 'n') {
-                                        pos++;
-                                        symbol = str[pos];
-                                        if (symbol === 't') {
-                                            pos++;
-                                            symbol = str[pos];
-                                            if (symbol === 'e') {
-                                                pos++;
-                                                symbol = str[pos];
-                                                if (symbol === 'g') {
-                                                    pos++;
-                                                    symbol = str[pos];
-                                                    if (symbol === 'e') {
-                                                        pos++;
-                                                        symbol = str[pos];
-                                                        if (symbol === 'r') {
-                                                            // Сохраняем 'integer' в map
-                                                            for (const id of semantics.keys()) {
-                                                                if (semantics.get(id) === null) {
-                                                                    semantics.set(id, `array[${arraySem}] of integer`);
-                                                                }
-                                                            }
-                                                            state = States.I30;
-                                                            pos++;
-                                                            symbol = str[pos];
-                                                            break;
-                                                        } else {
-                                                            state = States.E;
-                                                            index = pos;
-                                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
-                                                        }
-                                                    } else {
-                                                        state = States.E;
-                                                        index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
-                                                    }
-                                                } else {
-                                                    state = States.E;
-                                                    index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'g' для завершения слова 'integer', найден '${symbol}'`;
-                                                }
-                                            } else {
-                                                state = States.E;
-                                                index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'integer', найден '${symbol}'`;
-                                            }
-                                        } else {
-                                            state = States.E;
-                                            index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'integer', найден '${symbol}'`;
-                                        }
-                                    } else {
-                                        state = States.E;
-                                        index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'n' для завершения слова 'integer', найден '${symbol}'`;
-                                    }
-                                    break;
-                                }
-                                case 'r': { // Для слова 'real'
-                                    pos++;
-                                    symbol = str[pos];
-                                    if (symbol === 'e') {
-                                        pos++;
-                                        symbol = str[pos];
-                                        if (symbol === 'a') {
-                                            pos++;
-                                            symbol = str[pos];
-                                            if (symbol === 'l') {
-                                                // Сохраняем 'real' в map
-                                                for (const id of semantics.keys()) {
-                                                    if (semantics.get(id) === null) {
-                                                        semantics.set(id, `array[${arraySem}] of real`);
-                                                    }
-                                                }
-                                                state = States.I30;
-                                                pos++;
-                                                symbol = str[pos];
-                                                break;
-                                            } else {
-                                                state = States.E;
-                                                index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'real', найден '${symbol}'`;
-                                            }
-                                        } else {
-                                            state = States.E;
-                                            index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'real', найден '${symbol}'`;
-                                        }
-                                    } else {
-                                        state = States.E;
-                                        index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'real', найден '${symbol}'`;
-                                    }
-                                    break;
-                                }
-                                case 'c': { // Для слова 'char'
-                                    pos++;
-                                    symbol = str[pos];
-                                    if (symbol === 'h') {
-                                        pos++;
-                                        symbol = str[pos];
-                                        if (symbol === 'a') {
-                                            pos++;
-                                            symbol = str[pos];
-                                            if (symbol === 'r') {
-                                                // Сохраняем 'char' в map
-                                                for (const id of semantics.keys()) {
-                                                    if (semantics.get(id) === null) {
-                                                        semantics.set(id, `array[${arraySem}] of char`);
-                                                    }
-                                                }
-                                                state = States.I30;
-                                                pos++;
-                                                symbol = str[pos];
-                                                break;
-                                            } else {
-                                                state = States.E;
-                                                index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'char', найден '${symbol}'`;
-                                            }
-                                        } else {
-                                            state = States.E;
-                                            index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'char', найден '${symbol}'`;
-                                        }
-                                    } else {
-                                        state = States.E;
-                                        index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'h' для завершения слова 'char', найден '${symbol}'`;
-                                    }
-                                    break;
-                                }
-                                case 'd': {
-                                    pos++;
-                                    symbol = str[pos];
-                                    if (symbol === 'o') {
-                                        pos++;
-                                        symbol = str[pos];
-                                        if (symbol === 'u') {
-                                            pos++;
-                                            symbol = str[pos];
-                                            if (symbol === 'b') {
-                                                pos++;
-                                                symbol = str[pos];
-                                                if (symbol === 'l') {
-                                                    pos++;
-                                                    symbol = str[pos];
-                                                    if (symbol === 'e') {
-                                                        for (const id of semantics.keys()) {
-                                                            if (semantics.get(id) === null) {
-                                                                semantics.set(id, `array[${arraySem}] of double`);
-                                                            }
-                                                        }
-                                                        state = States.I30;
-                                                        pos++;
-                                                        symbol = str[pos];
-                                                        break;
-                                                    } else {
-                                                        state = States.E;
-                                                        index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'double', найден '${symbol}'`;
-                                                    }
-                                                } else {
-                                                    state = States.E;
-                                                    index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'double', найден '${symbol}'`;
-                                                }
-                                            } else {
-                                                state = States.E;
-                                                index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'b' для завершения слова 'double', найден '${symbol}'`;
-                                            }
-                                        } else {
-                                            state = States.E;
-                                            index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'u' для завершения слова 'double', найден '${symbol}'`;
-                                        }
-                                    } else {
-                                        state = States.E;
-                                        index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'double', найден '${symbol}'`;
-                                    }
-                                    break;
-                                }
-                                default: {
-                                    state = States.E;
-                                    index = pos;
-                                    errorText = `Синтаксическая ошибка: найден некорректный символ '${symbol}', ожидается один из символов 'b', 'w', 'i', 'r', 'c', 'd'`;
-                                    break;
-                                }
-                            }
+                        }else {
+                            state = States.E;
+                            index = pos;
+                            errorText = `Синтаксическая ошибка: ожидается ' ', найден '${symbol}'`;
                         }
                         console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         break;
@@ -1770,7 +1480,7 @@ export const AnalyzerCode = (() => {
                         console.log('Вошли в состояние G28');
                         console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         if (symbol === ' ') {
-                            state = States.H29;  // Переход в состояние H6, если встречен пробел
+                            state = States.H29;
                             pos++;
                             symbol = str[pos];
                         } else {
