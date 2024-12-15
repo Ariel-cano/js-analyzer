@@ -1,4 +1,3 @@
-console.log('AnalyzerCode загружен!');
 const States = {
     S: 'S', VAR1: 'VAR1', VAR2: 'VAR2', A1: 'A1', B2: 'B2',
     C3: 'C3', D4: 'D4', H6: 'H6', I7: 'I7', J8:'J8', K9:'K9',
@@ -12,9 +11,7 @@ const States = {
 
 export const AnalyzerCode = (() => {
     const semantics = new Map();
-
     const analyzedString = (text) => {
-        console.log('Начало анализа строки:', text);
         semantics.clear();
         const str = text.toLowerCase();
         let pos = 0;
@@ -32,7 +29,6 @@ export const AnalyzerCode = (() => {
                 let symbol = str[pos];
                 switch (state) {
                     case States.S: {
-                        console.log('Вошли в состояние S');
                         switch (symbol) {
                             case ' ':
                                 state = States.S;
@@ -40,28 +36,25 @@ export const AnalyzerCode = (() => {
                                 break;
                             case 'v':
                                 state = States.VAR1;
-                                console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                 pos++;
                                 symbol = str[pos];
                                 if (symbol === 'a') {
                                     state = States.VAR2;
-                                    console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'r') {
                                         state = States.A1;
-                                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                         pos++;
                                         symbol = str[pos];
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = "Синтаксическая ошибка: недопустимый символ, ожидается символ 'r'";
+                                        errorText = "Syntax error: invalid symbol, expected symbol 'r'";
                                     }
                                 } else {
                                     state = States.E;
                                     index = pos;
-                                    errorText = "Синтаксическая ошибка: недопустимый символ, ожидается символ 'a'";
+                                    errorText = "Syntax error: invalid symbol, expected symbol 'a'";
                                 }
                                 break;
                             default:
@@ -73,11 +66,9 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.A1: {
-                        console.log('Вошли в состояние A1');
                         switch (symbol) {
                             case ' ':
                                 state = States.B2;
-                                console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                 pos++;
                                 symbol = str[pos];
                                 break;
@@ -91,7 +82,6 @@ export const AnalyzerCode = (() => {
                     }
                     case States.B2: {
                         arraySem = '';
-                        console.log('Вошли в состояние B2');
                         switch (symbol) {
                             case ' ':
                                 state = States.B2;
@@ -100,9 +90,7 @@ export const AnalyzerCode = (() => {
                             default:
                                 if (symbol >= 'a' && symbol <= 'z') {
                                     sem = '' + symbol;
-                                    console.log(sem);
                                     state = States.C3;
-                                    console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                     pos++;
                                     symbol = str[pos];
                                 } else {
@@ -115,10 +103,8 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.C3: {
-                        console.log('Вошли в состояние C3');
                         if ((symbol >= 'a' && symbol <= 'z') || (symbol >= '0' && symbol <= '9')) {
                             sem += symbol;
-                            console.log(sem);
                             if (sem.length > 8) {
                                 state = States.E;
                                 index = pos - sem.length + 1;
@@ -173,14 +159,11 @@ export const AnalyzerCode = (() => {
                             index = pos;
                             errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}' в идентификаторе`;
                         }
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         pos++;
                         symbol = str[pos];
                         break;
                     }
                     case States.K9: {
-                        console.log('Вошли в состояние K9');
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ': {
                                 state = States.K9;
@@ -201,13 +184,10 @@ export const AnalyzerCode = (() => {
                                 break;
                             }
                         }
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         pos++;
                         break;
                     }
                     case States.D4: {
-                        console.log('Вошли в состояние D4');
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         if (symbol === 'a'){
                             state = States.AR1;
                             pos++;
@@ -223,25 +203,21 @@ export const AnalyzerCode = (() => {
                                 case 'b': {
                                     pos++
                                     symbol = str[pos];
-                                    console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                     if (symbol === 'y') {
                                         pos++
                                         symbol = str[pos];
-                                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                         if (symbol === 't') {
                                             pos++
                                             symbol = str[pos];
-                                            console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                             if (symbol === 'e') {
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
-                                                        semantics.set(id, 'byte'); // Сохраняем 'byte' в map
+                                                        semantics.set(id, 'byte');
                                                     }
                                                 }
                                                 state = States.I7;
                                                 pos++
                                                 symbol = str[pos];
-                                                console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                                 break;
                                             } else {
                                                 state = States.E;
@@ -260,7 +236,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'w': { // Для слова 'word'
+                                case 'w': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'o') {
@@ -297,7 +273,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'i': { // Для слова 'integer'
+                                case 'i': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'n') {
@@ -358,7 +334,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'r': { // Для слова 'real'
+                                case 'r': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'e') {
@@ -395,7 +371,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'c': { // Для слова 'char'
+                                case 'c': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'h') {
@@ -492,7 +468,6 @@ export const AnalyzerCode = (() => {
                                 }
                             }
                         }
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         break;
                     }
                     case States.H6: {
@@ -511,25 +486,21 @@ export const AnalyzerCode = (() => {
                                 case 'b': {
                                     pos++
                                     symbol = str[pos];
-                                    console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                     if (symbol === 'y') {
                                         pos++
                                         symbol = str[pos];
-                                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                         if (symbol === 't') {
                                             pos++
                                             symbol = str[pos];
-                                            console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                             if (symbol === 'e') {
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
-                                                        semantics.set(id, 'byte'); // Сохраняем 'byte' в map
+                                                        semantics.set(id, 'byte');
                                                     }
                                                 }
                                                 state = States.I7;
                                                 pos++
                                                 symbol = str[pos];
-                                                console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                                 break;
                                             } else {
                                                 state = States.E;
@@ -548,7 +519,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'w': { // Для слова 'word'
+                                case 'w': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'o') {
@@ -558,7 +529,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'd') {
-                                                // Сохраняем 'word' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, 'word');
@@ -585,7 +555,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'i': { // Для слова 'integer'
+                                case 'i': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'n') {
@@ -604,7 +574,6 @@ export const AnalyzerCode = (() => {
                                                         pos++;
                                                         symbol = str[pos];
                                                         if (symbol === 'r') {
-                                                            // Сохраняем 'integer' в map
                                                             for (const id of semantics.keys()) {
                                                                 if (semantics.get(id) === null) {
                                                                     semantics.set(id, 'integer');
@@ -646,7 +615,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'r': { // Для слова 'real'
+                                case 'r': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'e') {
@@ -656,7 +625,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'l') {
-                                                // Сохраняем 'real' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, 'real');
@@ -683,7 +651,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'c': { // Для слова 'char'
+                                case 'c': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'h') {
@@ -693,7 +661,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'r') {
-                                                // Сохраняем 'char' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, 'char');
@@ -780,11 +747,9 @@ export const AnalyzerCode = (() => {
                                 }
                             }
                         }
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         break;
                     }
                     case States.I7: {
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ': {
                                 state = States.I7;
@@ -808,7 +773,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.AR1:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                            case 'r':{
                                state = States.AR2;
@@ -825,7 +789,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.AR2:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case 'r':{
                                 state = States.AR3;
@@ -842,7 +805,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.AR3:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case 'a':{
                                 state = States.AR4;
@@ -859,7 +821,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.AR4:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case 'y':{
                                 state = States.J8;
@@ -876,7 +837,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.J8:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.J8;
@@ -897,7 +857,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.L10:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.L10;
@@ -924,7 +883,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.M11:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             default: {
                                 if (symbol >= '0' && symbol <= '9') {
@@ -942,7 +900,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.N12:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 if (checkRange(sem)) {
@@ -984,7 +941,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.P14:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.P14;
@@ -1005,7 +961,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.O13:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.O13;
@@ -1032,7 +987,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.Q15:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             default: {
                                 if (symbol >= '0' && symbol <= '9') {
@@ -1050,12 +1004,10 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.R16:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 if (checkRange(sem)) {
                                     secondConstValue = parseInt(sem, 10);
-                                    console.log(`1 const = "${firstConstValue}", 2 const = "${secondConstValue}"`)
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
@@ -1074,7 +1026,6 @@ export const AnalyzerCode = (() => {
                             case ']':{
                                 if (checkRange(sem)) {
                                     secondConstValue = parseInt(sem, 10);
-                                    console.log(`1 const = "${firstConstValue}", 2 const = "${secondConstValue}"`)
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
@@ -1089,7 +1040,6 @@ export const AnalyzerCode = (() => {
                                 }
                                 sem = '';
                                 arraySem = `${firstConstValue}:${secondConstValue}`;
-                                console.log(arraySem);
                                 firstConstValue = 0;
                                 secondConstValue = 0;
                                 break;
@@ -1097,7 +1047,6 @@ export const AnalyzerCode = (() => {
                             case ',':{
                                 if (checkRange(sem)) {
                                     secondConstValue = parseInt(sem, 10);
-                                    console.log(`1 const = "${firstConstValue}", 2 const = "${secondConstValue}"`)
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
@@ -1112,7 +1061,6 @@ export const AnalyzerCode = (() => {
                                 }
                                 sem = '';
                                 arraySem = `${firstConstValue}:${secondConstValue}`;
-                                console.log(arraySem);
                                 firstConstValue = 0;
                                 secondConstValue = 0;
                                 break;
@@ -1133,7 +1081,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.W20:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.W20;
@@ -1142,7 +1089,6 @@ export const AnalyzerCode = (() => {
                             case ',':{
                                 sem = '';
                                 arraySem = `${firstConstValue}:${secondConstValue}`;
-                                console.log(arraySem);
                                 firstConstValue = 0;
                                 secondConstValue = 0;
                                 state = States.T17;
@@ -1151,7 +1097,6 @@ export const AnalyzerCode = (() => {
                             case ']':{
                                 sem = '';
                                 arraySem = `${firstConstValue}:${secondConstValue}`;
-                                console.log(arraySem);
                                 firstConstValue = 0;
                                 secondConstValue = 0;
                                 state = States.C26;
@@ -1168,7 +1113,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.T17:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.T17;
@@ -1195,7 +1139,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.U18:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             default: {
                                 if (symbol >= '0' && symbol <= '9') {
@@ -1213,7 +1156,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.V19:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 if (checkRange(sem)) {
@@ -1255,7 +1197,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.Y22:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.Y22;
@@ -1276,7 +1217,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.X21:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.X21;
@@ -1303,7 +1243,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.Z23:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             default: {
                                 if (symbol >= '0' && symbol <= '9') {
@@ -1321,12 +1260,10 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.A24:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 if (checkRange(sem)) {
                                     secondConstValue = parseInt(sem, 10);
-                                    console.log(`1 const = "${firstConstValue}", 2 const = "${secondConstValue}"`)
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
@@ -1345,7 +1282,6 @@ export const AnalyzerCode = (() => {
                             case ']':{
                                 if (checkRange(sem)) {
                                     secondConstValue = parseInt(sem, 10);
-                                    console.log(`1 const = "${firstConstValue}", 2 const = "${secondConstValue}"`)
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
@@ -1360,7 +1296,6 @@ export const AnalyzerCode = (() => {
                                 }
                                 sem = '';
                                 arraySem += `,${firstConstValue}:${secondConstValue}`;
-                                console.log(arraySem);
                                 firstConstValue = 0;
                                 secondConstValue = 0;
                                 break;
@@ -1381,7 +1316,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.B25:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.B25;
@@ -1390,7 +1324,6 @@ export const AnalyzerCode = (() => {
                             case ']':{
                                 sem = '';
                                 arraySem += `,${firstConstValue}:${secondConstValue}`;
-                                console.log(arraySem);
                                 firstConstValue = 0;
                                 secondConstValue = 0;
                                 state = States.C26;
@@ -1407,7 +1340,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.C26:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.D27;
@@ -1424,7 +1356,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.D27:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ':{
                                 state = States.D27;
@@ -1445,7 +1376,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.OF1:{
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case 'f':{
                                 state = States.G28;
@@ -1462,8 +1392,6 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.G28: {
-                        console.log('Вошли в состояние G28');
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         if (symbol === ' ') {
                             state = States.H29;
                             pos++;
@@ -1473,12 +1401,9 @@ export const AnalyzerCode = (() => {
                             index = pos;
                             errorText = `Синтаксическая ошибка: ожидается ' ', найден '${symbol}'`;
                         }
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         break;
                     }
                     case States.H29: {
-                        console.log('Вошли в состояние G28');
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         if (symbol === ' ') {
                             state = States.H29;
                             pos++;
@@ -1488,15 +1413,12 @@ export const AnalyzerCode = (() => {
                                 case 'b': {
                                     pos++
                                     symbol = str[pos];
-                                    console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                     if (symbol === 'y') {
                                         pos++
                                         symbol = str[pos];
-                                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                         if (symbol === 't') {
                                             pos++
                                             symbol = str[pos];
-                                            console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                             if (symbol === 'e') {
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
@@ -1506,7 +1428,6 @@ export const AnalyzerCode = (() => {
                                                 state = States.I30;
                                                 pos++
                                                 symbol = str[pos];
-                                                console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                                                 break;
                                             } else {
                                                 state = States.E;
@@ -1525,7 +1446,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'w': { // Для слова 'word'
+                                case 'w': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'o') {
@@ -1535,7 +1456,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'd') {
-                                                // Сохраняем 'word' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, `array[${arraySem}] of word`);
@@ -1562,7 +1482,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'i': { // Для слова 'integer'
+                                case 'i': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'n') {
@@ -1581,7 +1501,6 @@ export const AnalyzerCode = (() => {
                                                         pos++;
                                                         symbol = str[pos];
                                                         if (symbol === 'r') {
-                                                            // Сохраняем 'integer' в map
                                                             for (const id of semantics.keys()) {
                                                                 if (semantics.get(id) === null) {
                                                                     semantics.set(id, `array[${arraySem}] of integer`);
@@ -1623,7 +1542,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'r': { // Для слова 'real'
+                                case 'r': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'e') {
@@ -1633,7 +1552,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'l') {
-                                                // Сохраняем 'real' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, `array[${arraySem}] of real`);
@@ -1660,7 +1578,7 @@ export const AnalyzerCode = (() => {
                                     }
                                     break;
                                 }
-                                case 'c': { // Для слова 'char'
+                                case 'c': {
                                     pos++;
                                     symbol = str[pos];
                                     if (symbol === 'h') {
@@ -1670,7 +1588,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'r') {
-                                                // Сохраняем 'char' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, `array[${arraySem}] of char`);
@@ -1757,11 +1674,9 @@ export const AnalyzerCode = (() => {
                                 }
                             }
                         }
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         break;
                     }
                     case States.I30: {
-                        console.log(`Текущий символ: ${symbol}, Позиция: ${pos}, Состояние: ${state}`);
                         switch (symbol) {
                             case ' ': {
                                 state = States.I30;
@@ -1792,7 +1707,6 @@ export const AnalyzerCode = (() => {
                 }
             }
         } catch (error) {
-            console.error('Произошла ошибка в процессе анализа строки:', error);
             return {
                 success: false,
                 message: 'Произошла непредвиденная ошибка!',
@@ -1800,7 +1714,6 @@ export const AnalyzerCode = (() => {
         }
 
         if (state === States.F) {
-            console.log('Цепочка принадлежит языку');
             return {
                 success: true,
                 message: 'Цепочка принадлежит языку!',
@@ -1809,7 +1722,6 @@ export const AnalyzerCode = (() => {
         }
 
         if (state === States.E) {
-            console.log(`Ошибка: ${errorText}`);
             return {
                 success: false,
                 message: errorText,

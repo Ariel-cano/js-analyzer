@@ -6,7 +6,6 @@
     <title>Анализатор синтаксиса</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
-        /* Добавляем стили для отображения ошибок */
         .error {
             color: red;
             font-weight: bold;
@@ -36,7 +35,6 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Таблица будет заполняться программно -->
             </tbody>
         </table>
     </div>
@@ -47,9 +45,7 @@
 
     document.getElementById("analyze-btn").addEventListener("click", function() {
         const inputString = document.getElementById("input-string").value;
-        console.log('Введенная строка:', inputString);
         const result = AnalyzerCode.analyzedString(inputString);
-        console.log('Результат анализа:', result);
 
         const analysisResultElement = document.getElementById("analysis-result");
         const symbolTableBody = document.querySelector("#symbol-table tbody");
