@@ -60,7 +60,7 @@ export const AnalyzerCode = (() => {
                             default:
                                 state = States.E;
                                 index = pos;
-                                errorText = "Синтаксическая ошибка: недопустимый символ, ожидается символ ' ' или 'v'";
+                                errorText = "Syntax error: invalid symbol, expected symbol ' ' or 'v'";
                                 break;
                         }
                         break;
@@ -75,7 +75,7 @@ export const AnalyzerCode = (() => {
                             default:
                                 state = States.E;
                                 index = pos;
-                                errorText = "Синтаксическая ошибка: недопустимый символ, ожидается символ ' '";
+                                errorText = "Syntax error: invalid symbol, expected symbol ' '";
                                 break;
                         }
                         break;
@@ -96,7 +96,7 @@ export const AnalyzerCode = (() => {
                                 } else {
                                     state = States.E;
                                     index = pos;
-                                    errorText = "Синтаксическая ошибка: недопустимый символ, ожидается символ ' ' или 'a|...|z'";
+                                    errorText = "Syntax error: invalid symbol, expected symbol ' ' or 'a|...|z'";
                                 }
                                 break;
                         }
@@ -108,7 +108,7 @@ export const AnalyzerCode = (() => {
                             if (sem.length > 8) {
                                 state = States.E;
                                 index = pos - sem.length + 1;
-                                errorText = `Семантическая ошибка: длина идентификатора '${sem}' превышает 8 символов`;
+                                errorText = `Semantic error: identifier length '${sem}' exceeds 8 symbols`;
                             } else {
                                 state = States.C3;
                             }
@@ -116,11 +116,11 @@ export const AnalyzerCode = (() => {
                             if (['var', 'byte', 'word', 'integer', 'real', 'char', 'double', 'array'].includes(sem.toLowerCase())) {
                                 state = States.E;
                                 index = pos - sem.length;
-                                errorText = `Семантическая ошибка: идентификатор '${sem}' не может быть зарезервированным словом`;
+                                errorText = `Semantic error: identifier '${sem}' cannot be a reserved word`;
                             } else if (semantics.has(sem)) {
                                 state = States.E;
                                 index = pos - sem.length;
-                                errorText = `Семантическая ошибка: идентификатор '${sem}' уже объявлен`;
+                                errorText = `Semantic error: identifier '${sem}' is already declared`;
                             } else {
                                 semantics.set(sem, null);
                                 sem = '';
@@ -130,11 +130,11 @@ export const AnalyzerCode = (() => {
                             if (['var', 'byte', 'word', 'integer', 'real', 'char', 'double', 'array'].includes(sem.toLowerCase())) {
                                 state = States.E;
                                 index = pos - sem.length;
-                                errorText = `Семантическая ошибка: идентификатор '${sem}' не может быть зарезервированным словом`;
+                                errorText = `Semantic error: identifier '${sem}' cannot be a reserved word`;
                             } else if (semantics.has(sem)) {
                                 state = States.E;
                                 index = pos - sem.length;
-                                errorText = `Семантическая ошибка: идентификатор '${sem}' уже объявлен`;
+                                errorText = `Semantic error: identifier '${sem}' is already declared`;
                             } else {
                                 semantics.set(sem, null);
                                 sem = '';
@@ -144,11 +144,11 @@ export const AnalyzerCode = (() => {
                             if (['var', 'byte', 'word', 'integer', 'real', 'char', 'double', 'array'].includes(sem.toLowerCase())) {
                                 state = States.E;
                                 index = pos - sem.length;
-                                errorText = `Семантическая ошибка: идентификатор '${sem}' не может быть зарезервированным словом`;
+                                errorText = `Semantic error: identifier '${sem}' cannot be a reserved word`;
                             } else if (semantics.has(sem)) {
                                 state = States.E;
                                 index = pos - sem.length;
-                                errorText = `Семантическая ошибка: идентификатор '${sem}' уже объявлен`;
+                                errorText = `Semantic error: identifier '${sem}' is already declared`;
                             } else {
                                 semantics.set(sem, null);
                                 sem = '';
@@ -157,7 +157,7 @@ export const AnalyzerCode = (() => {
                         } else {
                             state = States.E;
                             index = pos;
-                            errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}' в идентификаторе`;
+                            errorText = `Syntax error: invalid symbol '${symbol}' in identifier`;
                         }
                         pos++;
                         symbol = str[pos];
@@ -180,7 +180,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = "Синтаксическая ошибка: недопустимый символ, ожидается символ ' ', ',' или ':'";
+                                errorText = "Syntax error: invalid symbol, expected symbol ' ', ',' or ':'";
                                 break;
                             }
                         }
@@ -188,7 +188,7 @@ export const AnalyzerCode = (() => {
                         break;
                     }
                     case States.D4: {
-                        if (symbol === 'a'){
+                        if (symbol === 'a') {
                             state = States.AR1;
                             pos++;
                             symbol = str[pos];
@@ -201,13 +201,13 @@ export const AnalyzerCode = (() => {
                         } else {
                             switch (symbol) {
                                 case 'b': {
-                                    pos++
+                                    pos++;
                                     symbol = str[pos];
                                     if (symbol === 'y') {
-                                        pos++
+                                        pos++;
                                         symbol = str[pos];
                                         if (symbol === 't') {
-                                            pos++
+                                            pos++;
                                             symbol = str[pos];
                                             if (symbol === 'e') {
                                                 for (const id of semantics.keys()) {
@@ -216,23 +216,23 @@ export const AnalyzerCode = (() => {
                                                     }
                                                 }
                                                 state = States.I7;
-                                                pos++
+                                                pos++;
                                                 symbol = str[pos];
                                                 break;
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'byte', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'e' to complete the word 'byte', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'byte', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 't' to complete the word 'byte', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'y' для завершения слова 'byte', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'y' to complete the word 'byte', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -246,7 +246,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'd') {
-                                                // Сохраняем 'word' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, 'word');
@@ -259,17 +258,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'd' для завершения слова 'word', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'd' to complete the word 'word', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'word', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'r' to complete the word 'word', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'word', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'o' to complete the word 'word', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -292,7 +291,6 @@ export const AnalyzerCode = (() => {
                                                         pos++;
                                                         symbol = str[pos];
                                                         if (symbol === 'r') {
-                                                            // Сохраняем 'integer' в map
                                                             for (const id of semantics.keys()) {
                                                                 if (semantics.get(id) === null) {
                                                                     semantics.set(id, 'integer');
@@ -305,32 +303,32 @@ export const AnalyzerCode = (() => {
                                                         } else {
                                                             state = States.E;
                                                             index = pos;
-                                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
+                                                            errorText = `Syntax error: expected 'r' to complete the word 'integer', but found '${symbol}'`;
                                                         }
                                                     } else {
                                                         state = States.E;
                                                         index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
+                                                        errorText = `Syntax error: expected 'e' to complete the word 'integer', but found '${symbol}'`;
                                                     }
                                                 } else {
                                                     state = States.E;
                                                     index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'g' для завершения слова 'integer', найден '${symbol}'`;
+                                                    errorText = `Syntax error: expected 'g' to complete the word 'integer', but found '${symbol}'`;
                                                 }
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'integer', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'e' to complete the word 'integer', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'integer', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 't' to complete the word 'integer', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'n' для завершения слова 'integer', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'n' to complete the word 'integer', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -344,7 +342,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'l') {
-                                                // Сохраняем 'real' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, 'real');
@@ -357,17 +354,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'real', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'l' to complete the word 'real', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'real', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'a' to complete the word 'real', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'real', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'e' to complete the word 'real', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -381,7 +378,6 @@ export const AnalyzerCode = (() => {
                                             pos++;
                                             symbol = str[pos];
                                             if (symbol === 'r') {
-                                                // Сохраняем 'char' в map
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
                                                         semantics.set(id, 'char');
@@ -394,17 +390,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'char', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'r' to complete the word 'char', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'char', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'a' to complete the word 'char', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'h' для завершения слова 'char', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'h' to complete the word 'char', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -436,34 +432,34 @@ export const AnalyzerCode = (() => {
                                                     } else {
                                                         state = States.E;
                                                         index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'double', найден '${symbol}'`;
+                                                        errorText = `Syntax error: expected 'e' to complete the word 'double', but found '${symbol}'`;
                                                     }
                                                 } else {
                                                     state = States.E;
                                                     index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'double', найден '${symbol}'`;
+                                                    errorText = `Syntax error: expected 'l' to complete the word 'double', but found '${symbol}'`;
                                                 }
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'b' для завершения слова 'double', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'b' to complete the word 'double', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'u' для завершения слова 'double', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'u' to complete the word 'double', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'double', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'o' to complete the word 'double', but found '${symbol}'`;
                                     }
                                     break;
                                 }
                                 default: {
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: найден некорректный символ '${symbol}', ожидается один из символов 'b', 'w', 'i', 'r', 'c', 'd'`;
+                                    errorText = `Syntax error: unexpected character '${symbol}', expected one of 'b', 'w', 'i', 'r', 'c', 'd'`;
                                     break;
                                 }
                             }
@@ -505,17 +501,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'byte', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'e' to complete the word 'byte', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'byte', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 't' to complete the word 'byte', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'y' для завершения слова 'byte', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'y' to complete the word 'byte', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -541,17 +537,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'd' для завершения слова 'word', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'd' to complete the word 'word', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'word', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'r' to complete the word 'word', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'word', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'o' to complete the word 'word', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -586,32 +582,32 @@ export const AnalyzerCode = (() => {
                                                         } else {
                                                             state = States.E;
                                                             index = pos;
-                                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
+                                                            errorText = `Syntax error: expected 'r' to complete the word 'integer', but found '${symbol}'`;
                                                         }
                                                     } else {
                                                         state = States.E;
                                                         index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
+                                                        errorText = `Syntax error: expected 'e' to complete the word 'integer', but found '${symbol}'`;
                                                     }
                                                 } else {
                                                     state = States.E;
                                                     index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'g' для завершения слова 'integer', найден '${symbol}'`;
+                                                    errorText = `Syntax error: expected 'g' to complete the word 'integer', but found '${symbol}'`;
                                                 }
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'integer', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'e' to complete the word 'integer', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'integer', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 't' to complete the word 'integer', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'n' для завершения слова 'integer', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'n' to complete the word 'integer', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -637,17 +633,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'real', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'l' to complete the word 'real', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'real', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'a' to complete the word 'real', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'real', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'e' to complete the word 'real', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -673,17 +669,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'char', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'r' to complete the word 'char', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'char', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'a' to complete the word 'char', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'h' для завершения слова 'char', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'h' to complete the word 'char', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -715,34 +711,34 @@ export const AnalyzerCode = (() => {
                                                     } else {
                                                         state = States.E;
                                                         index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'double', найден '${symbol}'`;
+                                                        errorText = `Syntax error: expected 'e' to complete the word 'double', but found '${symbol}'`;
                                                     }
                                                 } else {
                                                     state = States.E;
                                                     index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'double', найден '${symbol}'`;
+                                                    errorText = `Syntax error: expected 'l' to complete the word 'double', but found '${symbol}'`;
                                                 }
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'b' для завершения слова 'double', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'b' to complete the word 'double', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'u' для завершения слова 'double', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'u' to complete the word 'double', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'double', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'o' to complete the word 'double', but found '${symbol}'`;
                                     }
                                     break;
                                 }
                                 default: {
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: найден некорректный символ '${symbol}', ожидается один из символов 'b', 'w', 'i', 'r', 'c', 'd'`;
+                                    errorText = `Syntax error: unexpected character '${symbol}', expected one of 'b', 'w', 'i', 'r', 'c', 'd'`;
                                     break;
                                 }
                             }
@@ -766,7 +762,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  ' ', ',' или ';'`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ' ', ',' или ';'`;
                             }
                         }
                         pos++;
@@ -781,7 +777,7 @@ export const AnalyzerCode = (() => {
                            default: {
                                state = States.E;
                                index = pos;
-                               errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  'r'`;
+                               errorText = `Syntax error: invalid symbol '${symbol}', expected symbol 'r'`;
                                break;
                            }
                         }
@@ -797,7 +793,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  'r'`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol 'r'`;
                                 break;
                             }
                         }
@@ -813,7 +809,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  'a'`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol 'a'`;
                                 break;
                             }
                         }
@@ -829,7 +825,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  'y'`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol 'y'`;
                                 break;
                             }
                         }
@@ -849,7 +845,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  ' ' или '['`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  ' ' or '['`;
                                 break;
                             }
                         }
@@ -874,7 +870,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9 ', '+', '-' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  '0|...|9 ', '+', '-' or ' '`;
                                 }
                                 break;
                             }
@@ -891,7 +887,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9'`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9'`;
                                 }
                                 break;
                             }
@@ -908,7 +904,7 @@ export const AnalyzerCode = (() => {
                                 } else {
                                     state = States.E;
                                     index = pos - sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = "";
                                 break;
@@ -920,7 +916,7 @@ export const AnalyzerCode = (() => {
                                 } else {
                                     state = States.E;
                                     index = pos- sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 break;
@@ -932,7 +928,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9', ':' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  '0|...|9', ':' or ' '`;
                                 }
                                 break;
                             }
@@ -953,7 +949,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается ':' или ' '`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ':' or ' '`;
                                 break;
                             }
                         }
@@ -978,7 +974,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9 ', '+', '-' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9 ', '+', '-' or ' '`;
                                 }
                                 break;
                             }
@@ -995,7 +991,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9'`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  '0|...|9'`;
                                 }
                                 break;
                             }
@@ -1011,14 +1007,14 @@ export const AnalyzerCode = (() => {
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
-                                        errorText = `Семантическая ошибка: значение константы 2 '${secondConstValue}' должно быть больше, чем значение константы 1 '${firstConstValue}'`;
+                                        errorText = `Semantic error: the value of constant 2 '${secondConstValue}' must be greater than the value of constant 1 '${firstConstValue}'.`;
                                     }else{
                                         state = States.W20;
                                     }
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 break;
@@ -1029,14 +1025,14 @@ export const AnalyzerCode = (() => {
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
-                                        errorText = `Семантическая ошибка: значение константы 2 '${secondConstValue}' должно быть больше, чем значение константы 1 '${firstConstValue}'`;
+                                        errorText = `Semantic error: the value of constant 2 '${secondConstValue}' must be greater than the value of constant 1 '${firstConstValue}'.`;
                                     }else{
                                         state = States.C26;
                                     }
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 arraySem = `${firstConstValue}:${secondConstValue}`;
@@ -1050,14 +1046,14 @@ export const AnalyzerCode = (() => {
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
-                                        errorText = `Семантическая ошибка: значение константы 2 '${secondConstValue}' должно быть больше, чем значение константы 1 '${firstConstValue}'`;
+                                        errorText = `Semantic error: the value of constant 2 '${secondConstValue}' must be greater than the value of constant 1 '${firstConstValue}'.'`;
                                     }else{
                                         state = States.T17;
                                     }
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 arraySem = `${firstConstValue}:${secondConstValue}`;
@@ -1072,7 +1068,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9', ',',' ' или ']'`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  '0|...|9', ',',' ' or ']'`;
                                 }
                                 break;
                             }
@@ -1105,7 +1101,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается ',', ']' или ' '`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ',', ']' or ' '`;
                                 break;
                             }
                         }
@@ -1130,7 +1126,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9 ', '+', '-' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  '0|...|9 ', '+', '-' or ' '`;
                                 }
                                 break;
                             }
@@ -1147,7 +1143,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9'`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9'`;
                                 }
                                 break;
                             }
@@ -1164,7 +1160,7 @@ export const AnalyzerCode = (() => {
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 break;
@@ -1176,7 +1172,7 @@ export const AnalyzerCode = (() => {
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 break;
@@ -1188,7 +1184,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9', ':' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9', ':' or ' '`;
                                 }
                                 break;
                             }
@@ -1209,7 +1205,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается ':' или ' '`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ':' or ' '`;
                                 break;
                             }
                         }
@@ -1234,7 +1230,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9 ', '+', '-' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9 ', '+', '-' or ' '`;
                                 }
                                 break;
                             }
@@ -1251,7 +1247,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9'`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9'`;
                                 }
                                 break;
                             }
@@ -1267,14 +1263,14 @@ export const AnalyzerCode = (() => {
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
-                                        errorText = `Семантическая ошибка: значение константы 2 '${secondConstValue}' должно быть больше, чем значение константы 1 '${firstConstValue}'`;
+                                        errorText = `Semantic error: the value of constant 2 '${secondConstValue}' must be greater than the value of constant 1 '${firstConstValue}'.`;
                                     }else{
                                         state = States.B25;
                                     }
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 break;
@@ -1285,14 +1281,14 @@ export const AnalyzerCode = (() => {
                                     if (secondConstValue <= firstConstValue){
                                         state = States.E;
                                         index = pos - secondConstValue.toString().length;
-                                        errorText = `Семантическая ошибка: значение константы 2 '${secondConstValue}' должно быть больше, чем значение константы 1 '${firstConstValue}'`;
+                                        errorText = `Semantic error: the value of constant 2 '${secondConstValue}' must be greater than the value of constant 1 '${firstConstValue}'`;
                                     }else{
                                         state = States.C26;
                                     }
                                 } else {
                                     state = States.E;
                                     index = pos-sem.length;
-                                    errorText = `Семантическая ошибка: значение '${sem}' выходит за допустимый диапазон [-32768, 32767]`;
+                                    errorText = `Semantic error: the value of '${sem}' is out of the acceptable range [-32768, 32767]`;
                                 }
                                 sem = '';
                                 arraySem += `,${firstConstValue}:${secondConstValue}`;
@@ -1307,7 +1303,7 @@ export const AnalyzerCode = (() => {
                                 }else{
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  '0|...|9', ']' или ' '`;
+                                    errorText = `Syntax error: invalid symbol '${symbol}', expected symbol '0|...|9', ']' or ' '`;
                                 }
                                 break;
                             }
@@ -1332,7 +1328,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается ']' или ' '`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ']' or ' '`;
                                 break;
                             }
                         }
@@ -1348,7 +1344,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается ' '`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ' '`;
                                 break;
                             }
                         }
@@ -1368,7 +1364,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается 'o' или ' '`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol 'o' or ' '`;
                                 break;
                             }
                         }
@@ -1384,7 +1380,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается 'f'`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol 'f'`;
                                 break;
                             }
                         }
@@ -1399,7 +1395,7 @@ export const AnalyzerCode = (() => {
                         }else {
                             state = States.E;
                             index = pos;
-                            errorText = `Синтаксическая ошибка: ожидается ' ', найден '${symbol}'`;
+                            errorText = `Syntax error: invalid symbol '${symbol}', expected symbol ' '`;
                         }
                         break;
                     }
@@ -1422,7 +1418,7 @@ export const AnalyzerCode = (() => {
                                             if (symbol === 'e') {
                                                 for (const id of semantics.keys()) {
                                                     if (semantics.get(id) === null) {
-                                                        semantics.set(id, `array[${arraySem}] of byte`); // Сохраняем 'byte' в map
+                                                        semantics.set(id, `array[${arraySem}] of byte`);
                                                     }
                                                 }
                                                 state = States.I30;
@@ -1432,17 +1428,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'byte', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'e' to complete the word 'byte', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'byte', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 't' to complete the word 'byte', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'y' для завершения слова 'byte', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'y' to complete the word 'byte', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -1468,17 +1464,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'd' для завершения слова 'word', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'd' to complete the word 'word', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'word', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'r' to complete the word 'word', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'word', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'o' to complete the word 'word', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -1513,32 +1509,32 @@ export const AnalyzerCode = (() => {
                                                         } else {
                                                             state = States.E;
                                                             index = pos;
-                                                            errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
+                                                            errorText = `Syntax error: expected 'r' to complete the word 'integer', but found '${symbol}'`;
                                                         }
                                                     } else {
                                                         state = States.E;
                                                         index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'integer', найден '${symbol}'`;
+                                                        errorText = `Syntax error: expected 'e' to complete the word 'integer', but found '${symbol}'`;
                                                     }
                                                 } else {
                                                     state = States.E;
                                                     index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'g' для завершения слова 'integer', найден '${symbol}'`;
+                                                    errorText = `Syntax error: expected 'g' to complete the word 'integer', but found '${symbol}'`;
                                                 }
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'integer', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'e' to complete the word 'integer', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 't' для завершения слова 'integer', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 't' to complete the word 'integer', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'n' для завершения слова 'integer', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'n' to complete the word 'integer', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -1564,17 +1560,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'real', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'l' to complete the word 'real', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'real', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'a' to complete the word 'real', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'real', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'e' to complete the word 'real', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -1600,17 +1596,17 @@ export const AnalyzerCode = (() => {
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'r' для завершения слова 'char', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'r' to complete the word 'char', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'a' для завершения слова 'char', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'a' to complete the word 'char', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'h' для завершения слова 'char', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'h' to complete the word 'char', but found '${symbol}'`;
                                     }
                                     break;
                                 }
@@ -1642,34 +1638,34 @@ export const AnalyzerCode = (() => {
                                                     } else {
                                                         state = States.E;
                                                         index = pos;
-                                                        errorText = `Синтаксическая ошибка: ожидается 'e' для завершения слова 'double', найден '${symbol}'`;
+                                                        errorText = `Syntax error: expected 'e' to complete the word 'double', but found '${symbol}'`;
                                                     }
                                                 } else {
                                                     state = States.E;
                                                     index = pos;
-                                                    errorText = `Синтаксическая ошибка: ожидается 'l' для завершения слова 'double', найден '${symbol}'`;
+                                                    errorText = `Syntax error: expected 'l' to complete the word 'double', but found '${symbol}'`;
                                                 }
                                             } else {
                                                 state = States.E;
                                                 index = pos;
-                                                errorText = `Синтаксическая ошибка: ожидается 'b' для завершения слова 'double', найден '${symbol}'`;
+                                                errorText = `Syntax error: expected 'b' to complete the word 'double', but found '${symbol}'`;
                                             }
                                         } else {
                                             state = States.E;
                                             index = pos;
-                                            errorText = `Синтаксическая ошибка: ожидается 'u' для завершения слова 'double', найден '${symbol}'`;
+                                            errorText = `Syntax error: expected 'u' to complete the word 'double', but found '${symbol}'`;
                                         }
                                     } else {
                                         state = States.E;
                                         index = pos;
-                                        errorText = `Синтаксическая ошибка: ожидается 'o' для завершения слова 'double', найден '${symbol}'`;
+                                        errorText = `Syntax error: expected 'o' to complete the word 'double', but found '${symbol}'`;
                                     }
                                     break;
                                 }
                                 default: {
                                     state = States.E;
                                     index = pos;
-                                    errorText = `Синтаксическая ошибка: найден некорректный символ '${symbol}', ожидается один из символов 'b', 'w', 'i', 'r', 'c', 'd'`;
+                                    errorText = `Syntax error: unexpected character '${symbol}', expected one of 'b', 'w', 'i', 'r', 'c', 'd'`;
                                     break;
                                 }
                             }
@@ -1693,7 +1689,7 @@ export const AnalyzerCode = (() => {
                             default: {
                                 state = States.E;
                                 index = pos;
-                                errorText = `Синтаксическая ошибка: недопустимый символ '${symbol}', ожидается  ' ', ',' или ';'`;
+                                errorText = `Syntax error: invalid symbol '${symbol}', expected symbol  ' ', ',' or ';'`;
                             }
                         }
                         pos++;
@@ -1702,21 +1698,21 @@ export const AnalyzerCode = (() => {
                     default: {
                         state = States.E;
                         index = pos;
-                        errorText = `Необработанное состояние: ${state}`
+                        errorText = `Raw state: ${state}`
                     }
                 }
             }
         } catch (error) {
             return {
                 success: false,
-                message: 'Произошла непредвиденная ошибка!',
+                message: 'An unexpected error has occurred!',
             };
         }
 
         if (state === States.F) {
             return {
                 success: true,
-                message: 'Цепочка принадлежит языку!',
+                message: 'The chain belongs to the language!',
                 table: Array.from(semantics.entries()),
             };
         }
@@ -1733,7 +1729,7 @@ export const AnalyzerCode = (() => {
         }
         return {
             success: false,
-            message: "Ошибка: входная строка не завершена. Ожидается ';'.",
+            message: "Error: The input line is incomplete. Expected ';'.",
             errorIndex: strLen,
             highlightedText: str + `<span style="color: red;">&nbsp;_</span>`,
         };
@@ -1747,7 +1743,7 @@ export const AnalyzerCode = (() => {
 
 
     return {
-        analyzedString: analyzedString,  // Экспортируем analyzedString
+        analyzedString: analyzedString,
     };
 })();
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Анализатор синтаксиса</title>
+    <title>Syntax Analyzer</title>
     <link rel="stylesheet" href="styles/style.css">
     <style>
         .error {
@@ -17,21 +17,21 @@
 </head>
 <body>
 <div class="container">
-    <h1>Анализатор автоматного языка</h1>
+    <h1>Automaton language analyzer</h1>
     <div class="input-section">
-        <label for="input-string">Ввод строки:</label>
-        <textarea id="input-string" placeholder="Введите строку, например: VAR A,B:REAL;"></textarea>
-        <button id="analyze-btn">Анализировать</button>
+        <label for="input-string">Input string:</label>
+        <textarea id="input-string" placeholder="Enter a string, e.g., VAR A,B:REAL;"></textarea>
+        <button id="analyze-btn">Analyse</button>
     </div>
     <div class="output-section">
-        <h2>Анализ строки:</h2>
+        <h2>String analysis:</h2>
         <p id="analysis-result"></p>
-        <h2>Таблица имен переменных:</h2>
+        <h2>Variable name table:</h2>
         <table id="symbol-table">
             <thead>
             <tr>
-                <th>Идентификатор</th>
-                <th>Тип</th>
+                <th>Identifier</th>
+                <th>Type</th>
             </tr>
             </thead>
             <tbody>
@@ -57,9 +57,9 @@
 
         if (result.success === false) {
             analysisResultElement.innerHTML = `<span class="error">${result.message}</span>`;
-            analysisResultElement.innerHTML += `<br>Ошибка в символе: ${result.highlightedText}`;
+            analysisResultElement.innerHTML += `<br>Error at symbol: ${result.highlightedText}`;
         } else {
-            analysisResultElement.innerHTML = `<span>Цепочка принадлежит языку!</span>`;
+            analysisResultElement.innerHTML = `<span>The chain belongs to the language!</span>`;
 
             symbolTableBody.innerHTML = "";
 
